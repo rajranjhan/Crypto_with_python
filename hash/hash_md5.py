@@ -7,12 +7,14 @@ def hash(plaintext):
     Not meant for protecting passwords
     Returns 32 Hexadecimal characters (128 bit)
     '''
-    md5 = MD5.new()
-    # convert to bytes
-    md5.update(plaintext.encode())
-    return md5.hexdigest()
+    try:
+        md5 = MD5.new()
+        # convert to bytes
+        md5.update(plaintext.encode())
+        return md5.hexdigest()
+    except AttributeError as err:
+        return err
 
-
-if if __name__ == "__main__":
+if __name__ == "__main__":
     plaintext = input("Enter your text to be hashed : ")
     print(hash(plaintext))
