@@ -6,3 +6,12 @@ From Bitcoin's blockchain to virus scanners hash functions are some of the most 
 
 They provide one way data obsuctation providing strong protections for sensitive data if used properly. 
 
+## MD5
+    * 128 Bits
+    * Should not be used for hashing passwords
+
+# SHA 2 & 3
+   * 
+
+# HMAC
+   * Provides Authenticity and Integrity
