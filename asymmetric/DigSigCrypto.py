@@ -11,7 +11,7 @@ class DigSigCrypto:
        pass
     
     def __save_file(self, contents, file_name):
-        with open(file_name, "w") as file:
+        with open(file_name, "wb") as file:
             file.write(contents)
     
     def __read_file(self, file_name):
@@ -26,8 +26,8 @@ class DigSigCrypto:
 
     def generate_keys(self):
         keys =  RSA.generate(4096)
-        private_key = keys.exportkey("PEM")
-        public_key =  keys.publickey().exportkey("PEM")
+        private_key = keys.exportKey("PEM")
+        public_key =  keys.publickey().exportKey("PEM")
         self.__save_file(private_key, self.PRIVATE_KEY_FILE)
         self.__save_file(public_key, self.PUBLIC_KEY_FILE)
         print("Much success in generating keys")
@@ -39,7 +39,7 @@ class DigSigCrypto:
 
         private_key =  RSA.importKey(self.__read_file(private_keypath))
         signature = PKCS1_PSS.new(private_key)
-        return signature.sign(self, _sha256(message))
+        return signature.sign(self.__sha256(message))
 
     def verify(self, signed_signature, message, public_keypath = None):
         if public_keypath == None:
@@ -47,10 +47,11 @@ class DigSigCrypto:
 
         public_key =  RSA.importKey(self.__read_file(public_keypath))
         verifier = PKCS1_PSS.new(public_key)
-        verification = verifier.verify(self._sha256(message), signed_signature)
+        verification = verifier.verify(self.__sha256(message), signed_signature)
         return verification
 
 if __name__ == "__main__":
     DigSigCrypto().generate_keys()
     signature = DigSigCrypto().sign("Hello world")
-    DigSigCrypto().verify(signature, "Hello world")
+    print(signature)
+    print(DigSigCrypto().verify(signature, "Hello world"))
